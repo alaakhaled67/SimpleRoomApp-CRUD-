@@ -33,9 +33,9 @@
         tools:layout="@layout/fragment_update" >
         <action
             android:id="@+id/action_updateFragment_to_listFragment"
-            app:destination="@id/listFragment" />
+            app:destination="@id/listFragment"/>
         <argument
-            android:name="currentUser"
+            android:name="current_user"
             app:argType="com.example.room.model.UserEntity" />
     </fragment>
 </navigation>
