@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.databinding.BaseObservable
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.ListFragment
 import androidx.lifecycle.*
 import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import androidx.navigation.fragment.findNavController
@@ -19,6 +20,7 @@ import com.example.room.model.UserEntity
 import com.example.room.repo.UserRepo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class UpdateViewModel(application:Application):AndroidViewModel(application){
     private val repo: UserRepo
@@ -41,21 +43,5 @@ class UpdateViewModel(application:Application):AndroidViewModel(application){
     }
     fun OnInputTrue(User:UserEntity){
         updateUser(User)
-    }
-    fun deleteAllUsersView(context: Context,currentUser:UserEntity) {
-        val builder = AlertDialog.Builder(context)
-        builder.setPositiveButton("YES") { it, it1 ->
-            deleteUser(currentUser)
-            Toast.makeText(
-                context,
-                "${currentUser.firstName} deleted successfully!!",
-                Toast.LENGTH_LONG
-            ).show()
-            UpdateFragment().findNavController().navigate(R.id.action_updateFragment_to_listFragment)
-        }
-        builder.setNegativeButton("NO") { _, _ -> }
-        builder.setTitle("Delete ${currentUser.firstName}")
-        builder.setMessage("Are You Sure You Want To Delete ${currentUser.firstName}")
-        builder.create().show()
     }
 }

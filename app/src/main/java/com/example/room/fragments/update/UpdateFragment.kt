@@ -1,5 +1,6 @@
 package com.example.room.fragments.update
 
+import android.app.AlertDialog
 import android.icu.number.IntegerWidth
 import android.os.Bundle
 import android.view.*
@@ -10,6 +11,7 @@ import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.room.R
@@ -51,13 +53,30 @@ class UpdateFragment : Fragment() {
                 // Handle the menu selection
                 return when (menuItem.itemId) {
                     R.id.delete_menu -> {
-                        updateViewModel.deleteAllUsersView(requireContext(),args.currentUser)
+                        val builder = AlertDialog.Builder(context)
+                        builder.setPositiveButton("YES") { it, it1 ->
+                            updateViewModel.deleteUser(args.currentUser)
+                            Toast.makeText(
+                                context,
+                                "${args.currentUser.firstName} deleted successfully!!",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                        builder.setNegativeButton("NO") { _, _ -> }
+                        builder.setTitle("Delete ${args.currentUser.firstName}")
+                        builder.setMessage("Are You Sure You Want To Delete ${args.currentUser.firstName}")
+                        builder.create().show()
+                        findNavController().navigate(R.id.action_updateFragment_to_listFragment)
+                        true
+                    }
+                    android.R.id.home->{
+                        findNavController().popBackStack()
                         true
                     }
                     else -> false
                 }
             }
-        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+        },viewLifecycleOwner,Lifecycle.State.RESUMED)
         return view.root
     }
 }
